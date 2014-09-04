@@ -1,0 +1,4 @@
+[submodule "geoserver"]
+	path = geoserver
+	url = https://github.com/xandris/geoserver.git
+	branch = complex-geojson
