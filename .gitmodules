@@ -1,7 +1,3 @@
-[submodule "geoserver"]
-	path = geoserver
-	url = https://github.com/xandris/geoserver.git
-	branch = complex-geojson
 [submodule "geotools"]
 	path = geotools
 	url = https://github.com/xandris/geotools.git
