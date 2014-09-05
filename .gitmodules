@@ -1,4 +1,8 @@
+[submodule "geoserver"]
+	path = geoserver
+	url = https://github.com/mtc2-soa/geoserver.git
+	branch = complex-geojson
 [submodule "geotools"]
 	path = geotools
-	url = https://github.com/xandris/geotools.git
+	url = https://github.com/mtc2-soa/geotools.git
 	branch = inter-schema-joining
