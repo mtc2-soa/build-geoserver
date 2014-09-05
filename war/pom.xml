@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>mil.navy.mtc2</groupId>
+        <artifactId>geoserver-build</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>geoserver-war</artifactId>
+    <packaging>war</packaging>
+
+    <properties>
+        <configDirectory>${project.basedir}/../geoserver/data</configDirectory>
+        <configId>release</configId>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>configPackage</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <tasks>
+                                <!-- check if config is available, if not fail -->
+                                <available file="${configDirectory}/${configId}" property="configIsAvailable" />
+                                <fail message="Unable to locate configuration: ${configDirectory}/${configId}" unless="configIsAvailable" />
+
+                                <!-- copy the files from the config dir to the webapp dir -->
+                                <echo message="Copying data dir from ${configDirectory}/${configId}" />
+                                <copy todir="${webappSourceDirectory}/data">
+                                    <fileset dir="${configDirectory}/${configId}" includes="**/**" />
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>configClean</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <tasks>
+                                <delete dir="${webappSourceDirectory}/data" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webappDirectory>
+                        ${project.build.directory}/geoserver
+                    </webappDirectory>
+                    <warSourceDirectory>
+                        ${project.basedir}/../geoserver/src/web/app/src/main/webapp
+                    </warSourceDirectory>
+                    <webXml>
+                        ${project.basedir}/../geoserver/src/web/app/src/main/webapp/WEB-INF/web.xml
+                    </webXml>
+                    <warName>
+                        geoserver
+                    </warName>
+                    <packagingExcludes>WEB-INF/lib/servlet-api*.jar</packagingExcludes>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <GeoServerModule>core</GeoServerModule>
+                            <Application-Name>${project.build.finalname}</Application-Name>
+                            <Project-Version>${project.version}</Project-Version>
+                            <Iteration-Name>${iteration}</Iteration-Name>
+                            <Build-Timestamp>${maven.build.timestamp}</Build-Timestamp>
+                            <Git-Revision>${build.commit.id}</Git-Revision>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geoserver.web</groupId>
+            <artifactId>gs-web-app</artifactId>
+            <version>${gs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geoserver.community</groupId>
+            <artifactId>gs-wfs-notification-plugin</artifactId>
+            <version>${gs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geoserver.community</groupId>
+            <artifactId>geoserver-sync-server</artifactId>
+            <version>${gs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-app-schema</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mil.navy.spawar.c2rpc</groupId>
+            <artifactId>geoserver-depth-query</artifactId>
+            <version>${gs.version}</version>
+        </dependency>
+    </dependencies>
+</project>
