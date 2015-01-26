@@ -102,10 +102,10 @@
             <artifactId>gt-app-schema</artifactId>
             <version>${gt.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>mil.navy.spawar.c2rpc</groupId>
             <artifactId>geoserver-depth-query</artifactId>
             <version>${gs.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>
