@@ -17,6 +17,7 @@
         <configDirectory>${project.basedir}/../geoserver/data</configDirectory>
         <configId>release</configId>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+        <depthQueryVersion>1.2</depthQueryVersion>
     </properties>
 
     <build>
@@ -103,9 +104,9 @@
             <version>${gt.version}</version>
         </dependency>
         <dependency>
-            <groupId>mil.navy.spawar.c2rpc</groupId>
-            <artifactId>geoserver-depth-query</artifactId>
-            <version>${gs.version}</version>
+            <groupId>com.fsi.geoserver</groupId>
+            <artifactId>depth-query</artifactId>
+            <version>${depthQueryVersion}</version>
         </dependency>
     </dependencies>
 </project>
