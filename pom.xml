@@ -15,7 +15,6 @@
     </properties>
 
     <modules>
-        <module>geotools</module>
         <module>geoserver/src</module>
         <module>war</module>
     </modules>
